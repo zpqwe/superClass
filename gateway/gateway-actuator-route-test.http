@@ -1,0 +1,45 @@
+# For a quick start check out our HTTP Requests collection (Tools|HTTP Client|Open HTTP Requests Collection).
+#
+# Following HTTP Request Live Templates are available:
+# * 'gtrp' and 'gtr' create a GET request with or without query parameters;
+# * 'ptr' and 'ptrp' create a POST request with a simple or parameter-like body;
+# * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
+POST http://localhost:8040/actuator/gateway/routes/test_route
+Content-Type: application/json
+
+{
+  "predicates": [
+    {
+      "name": "Path",
+      "args": {
+        "_genkey_0": "/test"
+      }
+    }
+  ],
+  "filters": [
+    {
+      "name": "AddRequestHeader",
+      "args": {
+        "_genkey_0": "X-Request-Foo",
+        "_genkey_1": "Bar"
+      }
+    },
+    {
+      "name": "MyLog",
+      "args": {
+        "_genkey_0": "a",
+        "_genkey_1": "b"
+      }
+    }
+  ],
+  "uri": "https://www.itmuch.com",
+  "order": 0
+}
+
+### 刷新路由缓存
+POST http://localhost:8040/actuator/gateway/refresh
+Content-Type: application/json
+
+{}
+
+###

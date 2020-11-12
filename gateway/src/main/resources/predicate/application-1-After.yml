@@ -1,0 +1,38 @@
+server:
+  port: 8040
+spring:
+  application:
+    name: ms-gateway
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        instance-id: ${spring.application.name}-${server.port}-${spring.cloud.client.hostname}
+        tags: JIFANG=NJ
+    gateway:
+      discovery:
+        locator:
+          # 让gateway从服务发现找到微服务，并反向代理
+          enabled: true
+      routes:
+        - id: after_route
+          # lb://表示从服务发现组件上找到指定微服务
+          uri: lb://ms-user
+          predicates:
+            # 当且仅当请求时的时间After配置的时间时，才会转发到用户微服务
+            # 目前配置不会进该路由配置，所以返回404
+            # 将时间改成 < now的时间，则访问localhost:8040/** -> ms-user/**
+            # eg. 访问http://localhost:8040/users/1 -> ms-user/users/1
+            - After=2030-01-20T17:42:47.789-07:00[America/Denver]
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+logging:
+  level:
+    org.springframework.cloud.gateway: trace

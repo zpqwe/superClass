@@ -1,0 +1,37 @@
+server:
+  port: 8040
+spring:
+  application:
+    name: ms-gateway
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        instance-id: ${spring.application.name}-${server.port}-${spring.cloud.client.hostname}
+        tags: JIFANG=NJ
+    gateway:
+      discovery:
+        locator:
+          # 让gateway从服务发现找到微服务，并反向代理
+          enabled: true
+      routes:
+        - id: header_route
+          # lb://表示从服务发现组件上找到指定微服务
+          uri: lb://ms-user
+          predicates:
+            # 当且仅当带有名为X-Request-Id，并且值符合正则\d+的Header时，才会转发到用户微服务
+            # 如Header满足条件，则访问http://localhost:8040/** -> ms-user/**
+            # eg. 访问http://localhost:8040/users/1 -> ms-user/users/1
+            - Header=X-Request-Id, \d+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+logging:
+  level:
+    org.springframework.cloud.gateway: trace
