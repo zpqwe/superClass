@@ -1,0 +1,71 @@
+server:
+  port: 8080
+spring:
+  rabbitmq:
+    host: localhost
+    port: 5672
+    #默认密码可忽略不写
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/ms_user
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      # 让 hibernate 不去操作表结构
+      ddl-auto: none
+      # 打印执行的sql语句
+    show-sql: true
+  cloud:
+    stream:
+      bindings:
+        input:
+          # 指定Topic
+          destination: lesson-buy
+          # 对于同一条消息，相同group下只会有一个实例去消费
+          # 负载均衡算法是轮询
+          group: g1
+    consul:
+      # 将consul 与 springboot的健康检查整合在一起，默认就是 /actuator/health
+      discovery:
+        instance-id: ${spring.application.name}-${server.port}-${spring.cloud.client.ip-address}
+        health-check-path: /actuator/health
+        prefer-ip-address: true
+        # 设置 Spring Cloud 的元数据
+        tags: JIFANG=NJ
+      host: localhost
+      port: 8500
+    inetutils:
+      preferred-networks:
+        - 192.168
+        - -10.0
+  zipkin:
+    # 指定zipkin-server的地址
+    base-url: http://localhost:9411
+    sender:
+      type: web
+    # 指定用什么方式上报数据给zipkin server
+      # web 表示用 http
+      # 有一个小坑
+    discovery-client-enabled: false
+  sleuth:
+      sampler:
+        # 配置数据的采样率，默认值0.1  (10%)
+        probability: 1.0
+first:
+  config: itmuch
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+jwt:
+  secret: aaabbbcccdddefaaabbbcccdddefaaabbbcccdddefaaabbbcccdddef
+  # 有效期，单位秒，默认2周
+  expire-time-in-second: 1209600
+logging:
+  level:
+    org.springframework.web: debug

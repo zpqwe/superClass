@@ -1,0 +1,67 @@
+# For a quick start check out our HTTP Requests collection (Tools|HTTP Client|Open HTTP Requests Collection).
+#
+# Following HTTP Request Live Templates are available:
+# * 'gtrp' and 'gtr' create a GET request with or without query parameters;
+# * 'ptr' and 'ptrp' create a POST request with a simple or parameter-like body;
+# * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
+POST http://localhost:8080/login
+Content-Type: application/json
+
+{
+  "username": "itmuch",
+  "password": "111"
+}
+
+###  eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyTmFtZSI6Iml0bXVjaCIsInVzZXJJZCI6MSwiaWF0IjoxNjA0NjQxMDY2LCJleHAiOjE2MDU4NTA2NjZ9.akEm6tgskFYevVrHniFnXRrNw1J_4CP5ggg1Zb5d--E
+GET http://localhost:8080/users/1
+Accept: application/json
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyTmFtZSI6Iml0bXVjaCIsInVzZXJJZCI6MSwiaWF0IjoxNjA0NjQyMzE1LCJleHAiOjE2MDU4NTE5MTV9.fLnIJcSjZi0u6X4tR8D0XH4t-gbPx18XrqDXHKqr8BE
+
+
+###
+GET http://localhost:8010/lessons/buy/1
+Accept: application/json
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyTmFtZSI6Iml0bXVjaCIsInVzZXJJZCI6MSwiaWF0IjoxNjA0NjQyMzE1LCJleHAiOjE2MDU4NTE5MTV9.fLnIJcSjZi0u6X4tR8D0XH4t-gbPx18XrqDXHKqr8BE
+
+### restTemplate 基于exchange()实现token传递测试
+GET http://localhost:8010/test-token-relay
+Accept: application/json
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyTmFtZSI6Iml0bXVjaCIsInVzZXJJZCI6MSwiaWF0IjoxNjA0NjQyMzE1LCJleHAiOjE2MDU4NTE5MTV9.fLnIJcSjZi0u6X4tR8D0XH4t-gbPx18XrqDXHKqr8BE
+
+### restTemplate 基于拦截器()实现token传递测试
+GET http://localhost:8010/test-token-relay2
+Accept: application/json
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyTmFtZSI6Iml0bXVjaCIsInVzZXJJZCI6MSwiaWF0IjoxNjA0NjQyMzE1LCJleHAiOjE2MDU4NTE5MTV9.fLnIJcSjZi0u6X4tR8D0XH4t-gbPx18XrqDXHKqr8BE
+
+### 用户使用user角色访问
+GET http://localhost:8010/vip
+Accept: application/json
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoidXNlciIsInVzZXJOYW1lIjoiaXRtdWNoIiwidXNlcklkIjoxLCJpYXQiOjE2MDQ2NjAxNDYsImV4cCI6MTYwNTg2OTc0Nn0.s9iE5F7n2eNKklUff1_YxBJwSFuKgjL7vI20IENk4eA
+
+### 用户使用vip角色访问
+GET http://localhost:8010/vip
+Accept: application/json
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoidmlwIiwidXNlck5hbWUiOiJpdG11Y2giLCJ1c2VySWQiOjEsImlhdCI6MTYwNDY2MDIzOSwiZXhwIjoxNjA1ODY5ODM5fQ.w3rqqXouub6AjBFDXTxVfS6IZ6KAtpspJPbgoj0HqQk
+
+### 利用网关代理用户微服务的login端点
+POST http://localhost:8040/ms-user/login
+Content-Type: application/json
+
+{
+  "username": "itmuch",
+  "password": "111"
+}
+
+### 利用网关代理课程微服务的/lessons/buy/1 断点
+GET http://localhost:8040/ms-class/lessons/buy/1
+Accept: application/json
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoidmlwIiwidXNlck5hbWUiOiJpdG11Y2giLCJ1c2VySWQiOjEsImlhdCI6MTYwNDkxNDg5MiwiZXhwIjoxNjA2MTI0NDkyfQ.YNLziHN-OKRNwmtWvpkT-ZW_kgk1r08VVGMGZyUIZ-o
+
+
+
+###
+GET http://localhost:8070/ms-class/lessons/buy/1
+Accept: application/json
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoidmlwIiwidXNlck5hbWUiOiJpdG11Y2giLCJ1c2VySWQiOjEsImlhdCI6MTYwNDkxNDg5MiwiZXhwIjoxNjA2MTI0NDkyfQ.YNLziHN-OKRNwmtWvpkT-ZW_kgk1r08VVGMGZyUIZ-o
+
+###
