@@ -1,0 +1,18 @@
+spring:
+  application:
+    # 指定注册到Consul 上的服务名称
+    # 分隔符需要用 中划线，不能用下划线
+    name: ms-class
+  cloud:
+    consul:
+      # 指定consul的主机名/IP
+      host: localhost
+      port: 8500
+      config:
+        format: yaml
+  #        prefix: config
+  #        data-key: data
+  #        profile-separator: ','
+  #        default-context: application
+  profiles:
+    active: dev

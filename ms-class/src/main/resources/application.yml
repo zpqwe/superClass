@@ -1,0 +1,90 @@
+server:
+  port: 8010
+spring:
+  zipkin:
+    # 指定zipkin-server的地址
+    base-url: http://localhost:9411
+    sender:
+      type: web
+      # 指定用什么方式上报数据给zipkin server
+      # web 表示用 http
+      # 有一个小坑
+    discovery-client-enabled: false
+  sleuth:
+    sampler:
+      # 配置数据的采样率，默认值0.1  (10%)
+      probability: 1.0
+  rabbitmq:
+    host: localhost
+    port: 5672
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/ms_class
+    hikari:
+      username: root
+      password: root
+      driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      # 让 hibernate 不去操作表结构
+      ddl-auto: none
+      # 打印执行的sql语句
+      show-sql: ture
+  application:
+    # 指定注册到Consul 上的服务名称
+    # 分隔符需要用 中划线，不能用下划线
+    name: ms-class
+  cloud:
+    stream:
+      bindings:
+        output:
+          destination: lesson-buy
+    consul:
+      # 指定consul的主机名/IP
+      host: localhost
+      port: 8500
+      # 将consul 与 springboot的健康检查整合在一起，默认就是 /actuator/health
+      discovery:
+        instance-id: ${spring.application.name}-${server.port}-${spring.cloud.client.ip-address}
+        health-check-path: /actuator/health
+        prefer-ip-address: true
+        tags: JIFANG=NJ
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+#ms-user:
+#  ribbon:
+#    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule
+ribbon:
+  eager-load:
+    enabled: true
+    # 多个逗号分隔
+    clients: ms-user
+
+# 设置Feign 打印日志级别
+logging:
+  level:
+    com.itmuch.msclass.feign.MsUserFeignClient: debug
+
+feign:
+  client:
+    config:
+      default:
+        loggerLevel: full
+        requestInterceptors:
+          - com.itmuch.msclass.feign.MyHeaderRequestInterceptor
+  httpclient:
+    # 让feign使用 apache httpclient，而不是默认的Client.Default
+    enabled: true
+    # feign 最大连接数
+    max-connections: 200
+    # feign单个路径的最大连接数
+    max-connections-per-route: 50
+jwt:
+  secret: aaabbbcccdddefaaabbbcccdddefaaabbbcccdddefaaabbbcccdddef
+  # 有效期，单位秒，默认2周
+  expire-time-in-second: 1209600
