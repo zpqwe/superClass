@@ -1,0 +1,20 @@
+server:
+  port: 8090
+spring:
+  cloud:
+    consul:
+      # 将consul 与 springboot的健康检查整合在一起，默认就是 /actuator/health
+      discovery:
+        instance-id: ${spring.application.name}-${server.port}-${spring.cloud.client.ip-address}
+        health-check-path: /actuator/health
+        prefer-ip-address: true
+        # 设置 Spring Cloud 的元数据
+        tags: JIFANG=NJ
+      host: localhost
+      port: 8500
+  application:
+    name: spring-boot-admin-server
+  boot:
+    admin:
+      discovery:
+        ignored-services: consul
